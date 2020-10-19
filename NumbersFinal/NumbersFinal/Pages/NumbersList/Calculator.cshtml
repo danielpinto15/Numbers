@@ -1,0 +1,84 @@
+﻿@page
+@model NumbersFinal.Pages.NumbersList.CalculatorModel
+
+
+<br />
+
+<h2 class="text-info">Calculator</h2>
+
+<div class="border container" style="padding:30px;">
+    <form method="post">
+        <div class="text-dange" asp-validation-summary="ModelOnly"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="@Model.MathsCalc.numbersToSplit"> List of Numbers</label>
+            </div>
+            <div class="col-6">
+                <input class="form-control" asp-for="@Model.MathsCalc.numbersToSplit " />
+
+                <span class="error offset-2">You must enter a valid Id Number</span>
+                <p class="offset-2">Use any symbol to separate the Numbers (Ex: / or -).</p>
+            </div>
+            <div>
+                <span asp-validation-for="@Model.MathsCalc.numbersToSplit"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3 offset-2">
+                <button type="submit" value="Create" class="btn btn-primary form-control">Show Result</button>
+            </div>
+            <div class="col-3">
+                <a asp-page="Index" class="btn btn-success form-control">Back to List</a>
+            </div>
+        </div>
+        <div><label>Result: @Model.MathsCalc.Result</label></div>
+    </form>
+    <div class="col-12 border p-3 m-3">
+        <form method="post">
+            @if (Model.NumberClasses.Count() > 0)
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            <label asp-for="NumberClasses.FirstOrDefault().Id">ID</label>
+                        </th>
+                        <th>
+                            <label asp-for="NumberClasses.FirstOrDefault().StringNumber">Numbers</label>
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.NumberClasses)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.Id);
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.StringNumber);
+                            </td>
+                            <td>
+                                <button asp-page-handler="Delete" asp-route-id="@item.Id" onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger btn-sm">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <p>Empty List.</p>
+            }
+        </form>
+    </div>
+</div>
+<script>
+    function check(elem) {
+        if (elem.value.match('^' + elem.getAttribute('pattern') + '$')) {
+            return true;
+        } else {
+            alert(elem.getAttribute('data-msg'));
+            return false;
+        }
+    }
+</script>
